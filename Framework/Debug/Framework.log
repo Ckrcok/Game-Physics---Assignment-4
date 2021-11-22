@@ -1,0 +1,7 @@
+﻿  Scene3.cpp
+D:\Dor\Studies\Humber College\Game Pyshics\Assigments\#4\SDL_Framework21.0.2.3\Framework\Scene3.cpp(37,20): warning C4018: '<': signed/unsigned mismatch
+D:\Dor\Studies\Humber College\Game Pyshics\Assigments\#4\SDL_Framework21.0.2.3\Framework\Scene3.cpp(69,42): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Dor\Studies\Humber College\Game Pyshics\Assigments\#4\SDL_Framework21.0.2.3\Framework\Scene3.cpp(69,35): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Dor\Studies\Humber College\Game Pyshics\Assigments\#4\SDL_Framework21.0.2.3\Framework\Scene3.cpp(71,20): warning C4018: '<': signed/unsigned mismatch
+D:\Dor\Studies\Humber College\Game Pyshics\Assigments\#4\SDL_Framework21.0.2.3\Framework\Scene3.cpp(145,20): warning C4018: '<': signed/unsigned mismatch
+  Framework.vcxproj -> D:\Dor\Studies\Humber College\Game Pyshics\Assigments\#4\SDL_Framework21.0.2.3\Debug\Framework.exe
