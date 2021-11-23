@@ -53,29 +53,10 @@ void Body::Update(float deltaTime) {
 	angle += radianToDegrees * vel.x * deltaTime / circumference;
 
 
-	//roof collision
-	if (pos.y > 15.0f) {
-		vel.y *= -1.f;
-		pos.y = 15.0f;
-	}
-	if (pos.y <2.5f) {
-		vel.y *= -1.f;
-		pos.y = 2.5f;
-	}
 
-
-	// right wall colloision
-	if (pos.x > 27.5f) {
-		vel.x = -vel.x;
-		pos.x = 27.5f;
-	}
-
-	// left wall collision
-	else if (pos.x < 0.0f) {
-		vel.x = -vel.x;
-		pos.x = 0.0f;
-	}
 }
+
+
 
 
 //apply force

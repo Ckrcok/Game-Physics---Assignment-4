@@ -39,6 +39,10 @@ public:
 		return vel;
 	}
 
+	void setMass(float mass_) {
+		mass = mass_;
+	}
+
 	void setRadius(const float radius_) {
 		radius = radius_;
 	}

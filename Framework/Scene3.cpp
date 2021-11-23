@@ -13,18 +13,21 @@ Scene3::Scene3(SDL_Window* sdlWindow_){
 	}
 
 
-	star.push_back(new Body(Vec3(10.f, 20.f, 0.0f)));
-
+	star.push_back(new Body(Vec3(10.0f,100.0f, 0.0f)));
 	star[0]->setVel(Vec3(0.0f, 0.0f, 0.0f));
 	star[0]->setAccel(Vec3(0.0f, 0.0f, 0.0f));
+	star[0]->setMass(1);
 
-	star.push_back(new Body(Vec3(5.0f, 10.0f, 0.0f)));
+
+	star.push_back(new Body(Vec3(100.0f, 140.0f, 0.0f)));
 	star[1]->setVel(Vec3(0.0f, 0.0f, 0.0f));
 	star[1]->setAccel(Vec3(0.0f, 0.0f, 0.0f));
+	star[1]->setMass(100);
 
-	star.push_back(new Body(Vec3(15.0f, 25.0f, 0.0f)));
+	star.push_back(new Body(Vec3(600.0f, 50.0f, 0.0f)));
 	star[2]->setVel(Vec3(0.0f, 0.0f, 0.0f));
 	star[2]->setAccel(Vec3(0.0f, 0.0f, 0.0f));
+	star[2]->setMass(150);
 	starAngle = 0.0;
 
 	std::cout << "hello from Scene3 \n";
@@ -48,7 +51,7 @@ bool Scene3::OnCreate() {
 	SDL_GetWindowSize(window,&w,&h);
 	
 	Matrix4 ndc = MMath::viewportNDC(w, h);
-	Matrix4 ortho = MMath::orthographic(0.0f, 50.0f, 0.0f, 50.0f, 0.0f, 1.0f);// it's gonna be 0 zero bottom 15 hieght 
+	Matrix4 ortho = MMath::orthographic(0.0f, 1090.0f, 0.0f, 144.0f, 0.0f, 1.0f);// it's gonna be 0 zero bottom 15 hieght 
 	projectionMatrix = ndc * ortho;
 
 
@@ -67,7 +70,7 @@ bool Scene3::OnCreate() {
 	size.print();
 	for (int i = 0; i < star.size(); ++i)
 	{
-		star[i]->setRadius(size.x / 2.0f);
+		star[i]->setRadius(size.x / 4.0f);
 	}
 
 	
@@ -80,52 +83,30 @@ void Scene3::OnDestroy() {}
 void Scene3::Update(const float deltaTime) {
 	
 		star[0]->Update(deltaTime);
+		star[1]->Update(deltaTime);
+		star[2]->Update(deltaTime);
+
+		const float G = 1.0;
 
 
 		Vec3 DirSt1P1 =  star[1]->getPos() - star[0]->getPos();
 		Vec3 DirSt2P1 =   star[2]->getPos() - star[0]->getPos();
 
-		float disSt1P1 = VMath::distance(star[0]->getPos(), star[1]->getPos());
-		float disSt2P1 = VMath::distance(star[0]->getPos(), star[2]->getPos());
+		float disSt1P1 = VMath::distance(star[1]->getPos() , star[0]->getPos());
+		float disSt2P1 = VMath::distance(star[2]->getPos() , star[0]->getPos());
+
+		Vec3 normalized1 = VMath::normalize(DirSt1P1);
+		Vec3 normalized2 = VMath::normalize(DirSt2P1);
+		float Mag1 = G* star[1]->getMass()* star[0]->getMass() / disSt1P1 * disSt1P1;
+		float Mag2 = G * star[2]->getMass() * star[0]->getMass() / disSt2P1 * disSt2P1;
+
+		Vec3 GforceSt1P1 = Vec3 (normalized1) * Mag1;
+		Vec3 GforceSt21P1 = Vec3(normalized2) * Mag2;
+		Vec3 netForce = Vec3(GforceSt1P1) + Vec3(GforceSt21P1);
+		star[0]->ApplyForce(Vec3(netForce));
 
 
-		//Star[0]->ApplyForce;
-
-
-
-
-		//if(distance <  star[0]->getRadius() + star[1]->getRadius()) {
-		//	// gether the info
-
-		//	Vec3 v1 = star[0]->getVel();
-		//	Vec3 v2 = star[1]->getVel();
-		//	float m1 = star[0]->getMass();
-		//	float m2 = star[1]->getMass();
-		//	float e = 1.0f;
-
-		//	// Do the collision
-		//	Vec3 lineOfAction = star[0]->getPos() - star[1]->getPos();
-		//	Vec3 normal = VMath::normalize(lineOfAction);
-		//	float v1p = VMath::dot(v1, normal);
-		//	float v2p = VMath::dot(v2, normal);
-		//	float v1pnew = (m1 - e * m2) * v1p + (1.0f + e) * m2 * v2p / (m1 + m2);
-		//	float v2pnew = (m2 - e * m1) * v2p + (1.0f + e) * m1 * v1p / (m1 + m2);
-
-		//	if ((v1p - v2p) > 0.0f) {
-
-		//	}
-
-		//	Vec3 v1new = v1 + (v1pnew - v1p) * normal;
-		//	Vec3 v2new = v2 + (v2pnew - v2p) * normal;
-
-		//	star[0]->setVel(v1new);
-		//	star[1]->setVel(v2new);
-
-		//	std::cout << "Collision\n";
-		//}
-		//else {
-		//	std::cout << "Nothing\n";
-		//}
+		printf("x = %f \n  y =   %f \n mass = %f \n", star[0]->getPos().x, star[0]->getPos().y, star[0]->getMass());
 }
 
 
