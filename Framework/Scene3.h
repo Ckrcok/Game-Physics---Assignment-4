@@ -14,7 +14,7 @@ private:
 	SDL_Renderer* renderer;
 	Matrix4 projectionMatrix;
 	std::vector <Body*> star;
-
+	SDL_Texture* GalaxyTexture;
 	SDL_Texture* starTexture;
 	double starAngle;
 

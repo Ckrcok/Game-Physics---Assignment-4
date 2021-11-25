@@ -47,15 +47,24 @@ Scene3::~Scene3(){
 bool Scene3::OnCreate() {
 	IMG_Init(IMG_INIT_PNG);
 	SDL_Surface* image;
+	SDL_Surface* Background;
 	int w, h;
+
+	Background = IMG_Load("textures/Galaxy.png");
+	if (Background == nullptr) {
+		std::cout << "can't load image \n";
+		return false;
+	}
+	GalaxyTexture = SDL_CreateTextureFromSurface(renderer, Background);
+
 	SDL_GetWindowSize(window,&w,&h);
-	
+	SDL_GL_MakeCurrent(window, Background);
 	Matrix4 ndc = MMath::viewportNDC(w, h);
 	Matrix4 ortho = MMath::orthographic(0.0f, 1090.0f, 0.0f, 144.0f, 0.0f, 1.0f);// it's gonna be 0 zero bottom 15 hieght 
 	projectionMatrix = ndc * ortho;
 
-
-	image = IMG_Load("textures/boulder.png");
+	
+	image = IMG_Load("textures/DeathStar.png");
 	Matrix4 invProjection = MMath::inverse(projectionMatrix);
 	if (image == nullptr) {
 		std::cout << "can't load image \n";
@@ -124,7 +133,7 @@ void Scene3::Render() const {
 	SDL_GetRenderDrawColor(renderer, 0, 0, 0, 0);
 	SDL_RenderClear(renderer);
 
-
+	SDL_RenderCopy(renderer, GalaxyTexture, NULL, NULL);
 	Vec3 screenCoords;
 	SDL_Rect square;
 	int width, height;
@@ -138,6 +147,7 @@ void Scene3::Render() const {
 		square.h = height;
 		SDL_RenderCopyEx(renderer, starTexture, nullptr, &square, star[i]->getAngle(), nullptr, SDL_FLIP_NONE);
 	}
-
+	
+	
 	SDL_RenderPresent(renderer);
 };
